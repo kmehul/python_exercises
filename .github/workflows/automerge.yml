@@ -1,4 +1,4 @@
-name: Auto Merge Exercism Branches
+name: Auto Merge and Cleanup Exercism Branches
 on:
   push:
     branches-ignore:
@@ -13,10 +13,11 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-      - name: Auto-merge branch into main
+      - name: Auto-merge and delete branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git fetch origin ${{ github.ref_name }}
           git merge origin/${{ github.ref_name }} --allow-unrelated-histories -m "Auto-merge ${{ github.ref_name }} into main"
           git push origin main
+          git push origin --delete ${{ github.ref_name }}
